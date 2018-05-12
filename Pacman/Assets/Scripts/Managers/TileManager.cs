@@ -27,25 +27,20 @@ public class TileManager : MonoBehaviour {
 	
 	public List<Tile> tiles = new List<Tile>();
 	
-	// Use this for initialization
 	void Start () 
 	{
         ReadTiles();
 
 	}
 
-    // Update is called once per frame
 	void Update () 
 	{
-		//DrawNeighbors();
 
 	}
-	
-	//-----------------------------------------------------------------------
-	// hardcoded tile data: 1 = free tile, 0 = wall
+
     void ReadTiles()
     {
-        // hardwired data instead of reading from file (not feasible on web player)
+        // mapa planszy
         string data = @"0000000000000000000000000000
 0111111111111001111111111110
 0100001000001001000001000010
@@ -85,38 +80,29 @@ public class TileManager : MonoBehaviour {
             while ((line = reader.ReadLine()) != null)
             {
 
-                X = 1; // for every line
+                X = 1; 
                 for (int i = 0; i < line.Length; ++i)
                 {
                     Tile newTile = new Tile(X, Y);
-
-                    // if the tile we read is a valid tile (movable)
                     if (line[i] == '1')
                     {
-                        // check for left-right neighbor
                         if (i != 0 && line[i - 1] == '1')
                         {
-                            // assign each tile to the corresponding side of other tile
                             newTile.left = tiles[tiles.Count - 1];
                             tiles[tiles.Count - 1].right = newTile;
 
-                            // adjust adjcent tile counts of each tile
                             newTile.adjacentCount++;
                             tiles[tiles.Count - 1].adjacentCount++;
                         }
                     }
-
-                    // if the current tile is not movable
                     else newTile.occupied = true;
 
-                    // check for up-down neighbor, starting from second row (Y<30)
-                    int upNeighbor = tiles.Count - line.Length; // up neighbor index
+                    int upNeighbor = tiles.Count - line.Length;
                     if (Y < 30 && !newTile.occupied && !tiles[upNeighbor].occupied)
                     {
                         tiles[upNeighbor].down = newTile;
                         newTile.up = tiles[upNeighbor];
 
-                        // adjust adjcent tile counts of each tile
                         newTile.adjacentCount++;
                         tiles[upNeighbor].adjacentCount++;
                     }
@@ -129,7 +115,6 @@ public class TileManager : MonoBehaviour {
             }
         }
 
-        // after reading all tiles, determine the intersection tiles
         foreach (Tile tile in tiles)
         {
             if (tile.adjacentCount > 2)
@@ -138,8 +123,6 @@ public class TileManager : MonoBehaviour {
 
     }
 
-	//-----------------------------------------------------------------------
-	// Draw lines between neighbor tiles (debug)
 	void DrawNeighbors()
 	{
 		foreach(Tile tile in tiles)
@@ -158,18 +141,11 @@ public class TileManager : MonoBehaviour {
 		
 	}
 
-
-	//----------------------------------------------------------------------
-	// returns the index in the tiles list of a given tile's coordinates
 	public int Index(int X, int Y)
 	{
-		// if the requsted index is in bounds
-		//Debug.Log ("Index called for X: " + X + ", Y: " + Y);
 		if(X>=1 && X<=28 && Y<=31 && Y>=1)
 			return (31-Y)*28 + X-1;
 
-		// else, if the requested index is out of bounds
-		// return closest in-bounds tile's index 
 	    if(X<1)		X = 1;
 	    if(X>28) 	X = 28;
 	    if(Y<1)		Y = 1;
@@ -183,8 +159,6 @@ public class TileManager : MonoBehaviour {
 		return (31-tile.y)*28 + tile.x-1;
 	}
 
-	//----------------------------------------------------------------------
-	// returns the distance between two tiles
 	public float distance(Tile tile1, Tile tile2)
 	{
 		return Mathf.Sqrt( Mathf.Pow(tile1.x - tile2.x, 2) + Mathf.Pow(tile1.y - tile2.y, 2));

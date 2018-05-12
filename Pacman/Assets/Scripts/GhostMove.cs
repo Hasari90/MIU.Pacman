@@ -105,13 +105,12 @@ public class GhostMove : MonoBehaviour
 
     private void InitializeWaypoints(State st)
     {
-        //--------------------------------------------------
-        // File Format: Init and Scatter coordinates separated by empty line
-        // Init X,Y 
-        // Init X,Y
+        // Start oraz waypoint startowe dla poszczególnych duchów
+        // Start X,Y 
+        // Start X,Y
         // 
-        // Scatter X,Y
-        // Scatter X,Y
+        // Waypoint X,Y
+        // Waypoint X,Y
 
         string data = "";
         switch (name)
@@ -283,8 +282,6 @@ public class GhostMove : MonoBehaviour
 		}
 	}
 
-	//-----------------------------------------------------------------------------------
-	// State functions
 	void Wait()
 	{
 		if(Time.time >= timeToEndWait)

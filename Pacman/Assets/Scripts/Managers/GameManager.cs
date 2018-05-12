@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    //--------------------------------------------------------
-    // Game variables
-
     public static int Level = 0;
     public static int lives = 3;
 
@@ -27,8 +24,6 @@ public class GameManager : MonoBehaviour {
 
     public float Speed;
     
-    //-------------------------------------------------------------------
-    // singleton implementation
     private static GameManager _instance;
 
     public static GameManager instance
@@ -44,9 +39,6 @@ public class GameManager : MonoBehaviour {
             return _instance;
         }
     }
-
-    //-------------------------------------------------------------------
-    // function definitions
 
     void Awake()
     {
